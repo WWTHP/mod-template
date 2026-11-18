@@ -129,7 +129,7 @@ adapt `Settings`/`Mod` references and `Describe()`.
 | `oth-wombatgd` | WombatGD | F7 menu, F8 engine sound cycle, F9 smoke screen | `"WGGD"` `0x57474744` | 1 | `WombatGD/` |
 | `oth-abominable-snowman` | AbominableSnowman | F6 menu | `"YETI"` `0x49544559` | 1 | `AbominableSnowman/` |
 | `oth-settings-hub` | SettingsHub | F5 menu for every mod (tabs) | none (AppDomain slots `WWTHP.SettingsHub.*.v1`, see generic §Menus) | 1 | `SettingsHub/` (CrashGuard only) |
-| `oth-tire-damage` | TireDamage | F4 (hold) repair, F1 menu without the hub | none | - | `TireDamage/` (CrashGuard only) |
+| `oth-tire-damage` | TireDamage | F4 tire repair screen, F1 menu without the hub | none | - | `TireDamage/` (CrashGuard only) |
 | `oth-fuel-management` | FuelManagement | F10 menu, F11 (hold) siphon | `"FUEL"` `0x4C455546` | 1 | `FuelManagement/` (CrashGuard only) |
 
 Taken by third-party mods the user runs: `OTHNight`, `ImmersiveFirstPersonView`, `OTH.CosmeticStacker`
