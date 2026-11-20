@@ -58,6 +58,12 @@ Workstation notes: interactive `cp` is aliased to `cp -i` and `rm` moves to the 
 7. Particles: clone the stock exhaust system (`ExhaustParticlesManager.exhaustParticleSystem.noDamageParticleSystem`)
    with `Object.Instantiate` and only `Emit`.
    (oth-wombatgd 0.5.3: hand-built ParticleSystem + Get/SetParticles crashed in MP.)
+8. **Ground settings are shared assets.** `GroundMaterialConfig` (`Grip`, `Drag`, …) is one
+   ScriptableObject per ground type, used by every car this machine simulates. Change it only while
+   this machine runs only the local car's physics (`Rigidbody.isKinematic == false` for it, and for
+   no car whose `NetworkObject.InputAuthority.IsRealPlayer` is another player), restore the
+   originals otherwise, and log which machine runs each car. Per-car effects go through the
+   car's own `VehicleBase` instead. (oth-tire-damage 0.6.0.)
 
 ## Useful game classes
 
@@ -69,7 +75,8 @@ Workstation notes: interactive `cp` is aliased to `cp -i` and `rm` moves to the 
 | `OverlandNetworkRunner` | `Instance`, `NetworkRunner`, `IsLocalPlayerSpawned`, `OnReliableDataReceived` (vtable hook) |
 | `NetworkRunner` (Fusion) | `SendReliableDataToServer(ReliableKey, ReadOnlySpan<byte>)`, `SendReliableDataToPlayer(PlayerRef, …)`, `IsServer`, `IsSinglePlayer`, `Topology`, `LocalPlayer`, `ActivePlayers` |
 | `ChallengeTrail`, `ChallengeTrailInfo` | challenge trail waypoints (used for yeti placement) |
-| `VehicleBase` (VPP, `Il2CppVehiclePhysics`) | `wheelState[i]` (`suspensionState.contactSpeed`/`compressionRatio`, `grounded`, `wheelCol`), `isHardImpact`/`localImpactPosition`/`localImpactVelocity`, `SetWheelRadius(int, float)`/`GetWheelRadius`, `SetWheelTireFrictionMultiplier(int, float)` (oth-tire-damage) |
+| `VehicleBase` (VPP, `Il2CppVehiclePhysics`) | `wheelState[i]` (`suspensionState.contactSpeed`/`compressionRatio`, `grounded`, `wheelCol`), `isHardImpact`/`localImpactPosition`/`localImpactVelocity`, `SetWheelRadius(int, float)`/`GetWheelRadius`, `SetWheelTireFrictionMultiplier(int, float)` (oth-tire-damage). Per wheel: `slipAngle`/`peakSlipAngle` (sideways) and `slipRatio`/`peakSlipRatio` (along the tire): compare each against its peak to tell cornering from wheelspin; `tireForceMult` reads back the friction multiplier (1.00 normally, the game did not rewrite it; values above 1 are kept and do add grip); `groundMaterial.Config` = the ground under the wheel. `m_groundMaterialIndexToConfig` lists the ground types |
+| `GroundMaterialConfig` (ScriptableObject, shared, see rule 8) | `Label` (`MaterialLabel` flags: Grass, Gravel, Mud, DeepMud, Dirt, Water, Rock, LooseRock, WoodPlank, WoodTrunk, Snow, DeepSnow, Ice, Sand, DeepSand, QuickSand, Bricks, ShallowSnow), `Grip` (snow 0.72, deep snow 0.75, ice 0.30, gravel 0.84, dirt 0.88, rock 0.92), `Drag` (deep snow 0.25, snow 0.15, gravel 0.10, ice/rock/dirt 0), `SurfaceType` (Hard/Soft/Neutral). Read live by the physics: changing `Drag` takes effect at once. Deep snow climbs are limited by drag more than by grip |
 | `CampManager` | `RepairPartyCars()`, `RPC_EndCamping()` (camp heals cars) |
 | `CarKicker` | seen in the decompiled sources (impulses to cars); not used by a mod yet |
 | `CarDamageSystem` | per car: `DamageAmount`, `MaxDamageAmount`, `vehicle` (VPP `VPVehicleController`), `damageEffects`, `originalSpeedLimit`, `originalMaxTorque`, `ApplyDriveabilityDebuffs()`/`ResetDriveabilityDebuffs()`, `HealOnCabinArrival`, `HealOnPointOfInterestArrival`, `OnPOIReached(PointOfInterest)`, private `PerformLocalPlayerHealingOperations(HealthChangingReason)` (HealedByPOI/Teleporting/Self/Other/Camping) |
@@ -141,6 +148,7 @@ menu key only works without the settings hub; new mods should still have one.
 
 | Date | Repo/version | What happened | Lesson |
 | --- | --- | --- | --- |
+| 2026-11-19 | oth-tire-damage 0.6.0 | Low tire pressure gave +27 % grip on snow (logged, read back) yet climbs felt the same; halving loose-ground `Drag` fixed it (SP) | log the physics inputs before tuning feel; ground drag is shared, rule 8 |
 | 2026-11-11 | oth-wombatgd 0.5.3 | Confirmed working in MP as client after smoke rework | cloning stock exhaust + `Emit` is safe |
 | 2026-11-10 | oth-wombatgd 0.5.3 | Repeated MP crashes; CrashGuard marker = `smoke` | not networking: hand-built ParticleSystem; rule 7 |
 | 2026-11-10 | oth-wombatgd 0.5.2 | Detour forwarded unknown keys → silent death ~0.2 s after a second mod hooked | rule 4 + chaining convention |
