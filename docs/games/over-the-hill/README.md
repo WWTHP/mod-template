@@ -126,14 +126,15 @@ adapt `Settings`/`Mod` references and `Describe()`.
 
 | Repo | Mod | Menu / keys | Net tag (`int0`) | Protocol | UserData folder |
 | --- | --- | --- | --- | --- | --- |
-| `oth-wombatgd` | WombatGD | F7 menu, F8 engine sound cycle, F9 smoke screen | `"WGGD"` `0x57474744` | 1 | `WombatGD/` |
-| `oth-abominable-snowman` | AbominableSnowman | F6 menu | `"YETI"` `0x49544559` | 1 | `AbominableSnowman/` |
+| `oth-wombatgd` | WombatGD | hub tab (F7 menu without the hub), F8 engine sound cycle, F9 smoke screen | `"WGGD"` `0x57474744` | 1 | `WombatGD/` |
+| `oth-abominable-snowman` | AbominableSnowman | hub tab (F6 menu without the hub) | `"YETI"` `0x49544559` | 1 | `AbominableSnowman/` |
 | `oth-settings-hub` | SettingsHub | F5 menu for every mod (tabs) | none (AppDomain slots `WWTHP.SettingsHub.*.v1`, see generic §Menus) | 1 | `SettingsHub/` (CrashGuard only) |
-| `oth-tire-damage` | TireDamage | F4 tire repair screen, F1 menu without the hub | none | - | `TireDamage/` (CrashGuard only) |
-| `oth-fuel-management` | FuelManagement | F10 menu, F11 (hold) siphon | `"FUEL"` `0x4C455546` | 1 | `FuelManagement/` (CrashGuard only) |
+| `oth-tire-damage` | TireDamage | F4 / pad L3+R3 tire repair screen, hub tab (F1 menu without the hub) | none | - | `TireDamage/` (CrashGuard only) |
+| `oth-fuel-management` | FuelManagement | hub tab (F10 menu without the hub), F11 (hold) siphon | `"FUEL"` `0x4C455546` | 1 | `FuelManagement/` (CrashGuard only) |
 
 Taken by third-party mods the user runs: `OTHNight`, `ImmersiveFirstPersonView`, `OTH.CosmeticStacker`
-(no networking); `OTHNight` uses F2/F3. Pick unused keys; make every key configurable. A mod's own
+(no networking); `OTHNight` uses F2/F3. Pick unused keys; make every key configurable. Controller: the game binds every pad button
+(`<Gamepad>/` paths in its assets), so a mod needs a chord (e.g. L3+R3) for a pad shortcut. A mod's own
 menu key only works without the settings hub; new mods should still have one.
 
 ## Incident log (game-level lessons, newest first)
