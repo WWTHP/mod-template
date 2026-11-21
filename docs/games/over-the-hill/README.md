@@ -64,6 +64,12 @@ Workstation notes: interactive `cp` is aliased to `cp -i` and `rm` moves to the 
    no car whose `NetworkObject.InputAuthority.IsRealPlayer` is another player), restore the
    originals otherwise, and log which machine runs each car. Per-car effects go through the
    car's own `VehicleBase` instead. (oth-tire-damage 0.6.0.)
+9. **The host runs every car's physics.** Topology is ClientServer: on the host every car is
+   non-kinematic with `HasStateAuthority`; a client also simulates every car (non-kinematic) but
+   only predicts (`state authority remote`), and the host's result wins. A physics change made on
+   a client (wheel grip, radius, drag) reads back there but does not decide how the car drives:
+   send it to the host and apply it there too (keep it on the client so prediction agrees).
+   Match the car by `NetworkObject.InputAuthority.Raw` = the packet's sender. (oth-tire-damage 0.7.0.)
 
 ## Useful game classes
 
@@ -148,6 +154,7 @@ menu key only works without the settings hub; new mods should still have one.
 
 | Date | Repo/version | What happened | Lesson |
 | --- | --- | --- | --- |
+| 2026-11-20 | oth-tire-damage 0.6.1 | Low tire pressure worked for the host but not for a client: the client's grip writes read back locally, yet the host runs every car's physics with authority | per-car physics changes go to the host too, rule 9 |
 | 2026-11-19 | oth-tire-damage 0.6.0 | Low tire pressure gave +27 % grip on snow (logged, read back) yet climbs felt the same; halving loose-ground `Drag` fixed it (SP) | log the physics inputs before tuning feel; ground drag is shared, rule 8 |
 | 2026-11-11 | oth-wombatgd 0.5.3 | Confirmed working in MP as client after smoke rework | cloning stock exhaust + `Emit` is safe |
 | 2026-11-10 | oth-wombatgd 0.5.3 | Repeated MP crashes; CrashGuard marker = `smoke` | not networking: hand-built ParticleSystem; rule 7 |
