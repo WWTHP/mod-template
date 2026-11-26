@@ -4,7 +4,7 @@ Template for WWTHP game mods (Unity IL2CPP + MelonLoader), with the accumulated 
 for modding in general and for each supported game.
 
 ```bash
-gh repo create WWTHP/<game>-<slug> --private --template WWTHP/mod-template --clone
+gh repo create WWTHP/<game>-<slug> --public --template WWTHP/mod-template --clone
 cd <game>-<slug> && python3 -m venv .venv && .venv/bin/pip install -r requirements-dev.txt
 tools/new-mod.sh <PascalName> && tools/check.sh
 ```
