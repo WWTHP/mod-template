@@ -32,9 +32,9 @@ Game-code reference (interop stubs: signatures plus calls into native code, no g
 
 Legal position (not legal advice): reading interop stubs to make mods interoperate is the
 interoperability case that US fair use (*Sega v. Accolade*, *Sony v. Connectix*, DMCA §1201(f))
-and the EU Software Directive Art. 6 protect. The open risk is contractual. **Before publishing
-any mod, check the game's EULA and Funselektor's stated stance on mods** and record it here.
-Not yet checked (2026-11-15).
+and the EU Software Directive Art. 6 protect. The open risk is contractual. The repos were made
+public on 2026-11-25 by the owner's decision. Funselektor's stated stance on mods was not found
+(web search, 2026-11-25); record it here once known, and act on any request from them.
 
 Workstation notes: interactive `cp` is aliased to `cp -i` and `rm` moves to the trash. Use
 `\cp -f` / `\rm -rf` in agent one-liners.
